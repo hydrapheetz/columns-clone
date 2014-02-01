@@ -111,6 +111,8 @@
 		gravityTimer		= gameStateTime
 
 		playerInput			= true
+
+		paused = false
 	end
 
 
@@ -119,6 +121,13 @@
 
 	end
 
+	function Game:pause()
+		paused = not paused
+	end
+	
+	function Game:isPaused()
+		return paused
+	end
 
 	function Game.pieceInPlay(self, firstRun)
 
@@ -490,6 +499,9 @@
 		love.graphics.print("total points", 402, 220)
 		love.graphics.print("blocks", 402, 257)
 		love.graphics.print("level", 402, 257 + 16)
+		if (Game:isPaused()) then
+			love.graphics.print("[ paused ]", 402, 257 + 32)
+		end
 
 
 		love.graphics.printf(string.format("%5.3f\n%5.3f\n\n%5.3f\n%5.3f", gravityTime - (gTimer - gravityTimer), gravityTime, lockTimer and (lockTime - (gTimer - lockTimer)) or lockTime, lockTime), 400, 370, 100, "right")

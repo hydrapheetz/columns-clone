@@ -72,6 +72,7 @@
 
 
 
+			fps = 0
 		gTimer	= 0
 
 		testPlayfield	= Playfield:new()
@@ -87,6 +88,8 @@
 
 		testGame:draw(100, 100)
 		--testGame:showGameState()
+		love.graphics.setFont(fonts.numbers)
+		love.graphics.printf(string.format("%.3f", fps), 0,0,0,"left")
 
 	end
 
@@ -95,9 +98,11 @@
 	--- LOVE Update callback.
 	-- @param dt	Delta-time of update (in seconds)
 	function love.update(dt)
-		gTimer	= gTimer + dt
-
-		testGame:update()
+		fps = 1 / dt
+		if not testGame:isPaused() then
+			gTimer	= gTimer + dt
+			testGame:update()
+		end
 	end
 
 
@@ -117,7 +122,9 @@
 			x		= "cycle"
 			}
 
-		if keytable[key] then
+		if key == "p" then
+			testGame:pause()
+		elseif keytable[key] and (not testGame:isPaused()) then
 			testGame:movePiece(keytable[key])
 		end
 
